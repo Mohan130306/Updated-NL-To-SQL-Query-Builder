@@ -1,0 +1,25 @@
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment Files
+.env
+
+# Streamlit Secrets
+.streamlit/secrets.toml
+
+# VS Code Settings
+.vscode/
+
+# Node / Frontend
+node_modules/
+dist/
+build/
+.DS_Store
