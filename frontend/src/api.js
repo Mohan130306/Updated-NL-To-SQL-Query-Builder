@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api', // Adjust in production
+  baseURL: import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : 'http://localhost:8000/api',
 });
 
 api.interceptors.request.use((config) => {
@@ -24,7 +24,6 @@ export const authAPI = {
   register: (data) => api.post('/auth/register', data),
   getMe: () => api.get('/auth/me'),
   requestOTP: (email) => api.post('/auth/request-otp', { email }),
-  verifyOTPLogin: (email, otp_code) => api.post('/auth/verify-otp-login', { email, otp_code }),
   resetPassword: (email, otp_code, new_password) => api.post('/auth/reset-password', { email, otp_code, new_password }),
 };
 

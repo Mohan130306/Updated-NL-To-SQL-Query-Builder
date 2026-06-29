@@ -4,12 +4,14 @@ import { LogOut, Database, User as UserIcon, TerminalSquare, ShieldAlert, Users,
 import QueryBuilder from '../components/QueryBuilder';
 import HistorySidebar from '../components/HistorySidebar';
 import UserManagement from '../components/UserManagement';
+import SchemaReference from '../components/SchemaReference';
 
 import './Dashboard.css';
 
 export default function Dashboard({ user, setUser }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('query');
+  const [rightPanel, setRightPanel] = useState('history'); // 'history' or 'schema'
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -102,7 +104,11 @@ export default function Dashboard({ user, setUser }) {
                 <QueryBuilder user={user} />
               </div>
               <div className="history-section">
-                <HistorySidebar />
+                {rightPanel === 'history' ? (
+                  <HistorySidebar onToggleSchema={() => setRightPanel('schema')} />
+                ) : (
+                  <SchemaReference onToggleHistory={() => setRightPanel('history')} />
+                )}
               </div>
             </>
           ) : activeTab === 'history' ? (

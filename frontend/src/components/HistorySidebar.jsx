@@ -3,7 +3,7 @@ import { queryAPI } from '../api';
 import { Clock, CheckCircle2, XCircle } from 'lucide-react';
 import './HistorySidebar.css';
 
-export default function HistorySidebar({ fullWidth = false }) {
+export default function HistorySidebar({ fullWidth = false, onToggleSchema }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,9 +26,16 @@ export default function HistorySidebar({ fullWidth = false }) {
 
   return (
     <div className="history-sidebar glass-panel" style={fullWidth ? { width: '100%', height: '100%', borderLeft: 'none' } : {}}>
-      <div className="history-header">
-        <Clock size={18} />
-        <h3>Query History</h3>
+      <div className="history-header" style={{ justifyContent: 'space-between', display: 'flex', width: '100%' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Clock size={18} />
+          <h3>Query History</h3>
+        </div>
+        {!fullWidth && onToggleSchema && (
+          <button className="toggle-sidebar-btn" onClick={onToggleSchema}>
+            Show Schema
+          </button>
+        )}
       </div>
       
       <div className="history-list">
