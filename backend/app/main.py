@@ -10,10 +10,20 @@ from app.api.api import api_router
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
+import os
+
 # Set up CORS
+origins = [
+    "http://localhost:5173", # Vite default
+    "http://127.0.0.1:5173",
+]
+frontend_url = os.getenv("FRONTEND_URL")
+if frontend_url:
+    origins.append(frontend_url)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this
+    allow_origins=origins if frontend_url else ["*"], # Allow all in dev, restrict in prod
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
