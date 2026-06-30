@@ -33,7 +33,7 @@ if frontend_url:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins if frontend_url else ["*"], # Allow all in dev, restrict in prod
-    allow_credentials=True,
+    allow_credentials=True if frontend_url else False, # Cannot be True if origins is ["*"]
     allow_methods=["*"],
     allow_headers=["*"],
 )
