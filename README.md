@@ -1,155 +1,104 @@
 # Updated NL To SQL Query Builder
 
-This project upgrades an existing Natural Language to SQL generation app to a full-fledged RBAC (Role-Based Access Control) application using FastAPI and React.
+![Aurora UI](https://img.shields.io/badge/UI-Aurora%20Glass-cyan) ![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688) ![React](https://img.shields.io/badge/Frontend-React-61DAFB) ![Supabase](https://img.shields.io/badge/Database-Supabase-3ECF8E)
 
-## Three Roles System
+This project upgrades an existing Natural Language to SQL generation app into a full-fledged, highly secure RBAC (Role-Based Access Control) application using FastAPI and React, featuring a stunning "Aurora Glass" UI.
 
-The system operates strictly under three defined roles with specific access levels to the generated database queries.
+## 🌟 Key Features
 
-```
+- **Natural Language to SQL**: Instantly generate and execute SQL queries using AI.
+- **OTP-Based Authentication**: Secure, passwordless entry using 6-digit email OTPs, plus standard password support and account recovery.
+- **Granular RBAC System**: 5-tier hierarchical permission system ranging from Viewers to Admins.
+- **Aurora Glass UI**: A beautiful, modern interface with dark mode, frosted glass panels, neon accents, and smooth micro-animations.
+- **100% Free Cloud Deployment Ready**: Pre-configured to deploy on Vercel, Render, and Supabase without spending a dime.
+
+---
+
+## 🛡️ Five-Tier Role Hierarchy
+
+The system operates strictly under five defined roles to ensure data security and compliance.
+
+```text
 ┌─────────────────────────────────────────────────────────────┐
-│                    THREE ROLES SYSTEM                        │
+│                    FIVE ROLES SYSTEM                        │
 ├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  1️⃣ ADMIN                                                   │
-│     ├─ Permissions: CREATE, ALTER, INSERT, UPDATE,         │
-│     │               DELETE, SELECT, DROP                    │
-│     ├─ Can: Manage users, assign roles, full DB access     │
-│     └─ UI: Admin panel, user management, all features      │
-│                                                              │
-│  2️⃣ DEVELOPER                                               │
-│     ├─ Permissions: INSERT, UPDATE, DELETE, SELECT         │
-│     ├─ Can: Generate queries, execute both read & write    │
-│     └─ UI: Query builder, execution history, exports       │
-│                                                              │
-│  3️⃣ ANALYST / USER (Read-Only)                              │
-│     ├─ Permissions: SELECT only                             │
-│     ├─ Can: View data, export results, saved queries       │
-│     └─ UI: Query builder (SELECT only), view-only panels   │
-│                                                              │
+│                                                             │
+│  1️⃣ ADMIN (Owner)                                          │
+│     ├─ Permissions: CREATE, ALTER, INSERT, UPDATE, DROP     │
+│     └─ Can: Manage users, assign roles, full DB access      │
+│                                                             │
+│  2️⃣ DATA ENGINEER                                          │
+│     ├─ Permissions: INSERT, UPDATE, DELETE, SELECT          │
+│     └─ Can: Generate queries, write & read, no drops        │
+│                                                             │
+│  3️⃣ POWER USER                                             │
+│     ├─ Permissions: SELECT (Cross-table), complex JOINS     │
+│     └─ Can: Advanced analytics, no writes                   │
+│                                                             │
+│  4️⃣ AUDITOR                                                │
+│     ├─ Permissions: SELECT (Limited), View Logs             │
+│     └─ Can: Read query history, security checks             │
+│                                                             │
+│  5️⃣ VIEWER (Default)                                       │
+│     ├─ Permissions: SELECT (Basic only)                     │
+│     └─ Can: View pre-generated reports, simple reads        │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## System Architecture
+---
 
-```mermaid
-graph TD
-    A["👤 User Visits App"] --> B["Sign Up / Login Page"]
-    B --> C["Enter Email & Password"]
-    C --> D["Backend Validates"]
-    D --> E["Role Assigned by Admin"]
-    E --> F{"JWT Token Generated<br/>(contains role)"}
-    F --> G["Frontend Receives Token"]
-    G --> H["User Redirected to Dashboard"]
-    
-    H --> I{"User Role Check"}
-    I -->|Admin| J["Admin Dashboard<br/>- Manage Users<br/>- View All Databases<br/>- Full SQL Access"]
-    I -->|Developer| K["Developer Dashboard<br/>- Query Builder<br/>- Read & Write Access<br/>- History & Exports"]
-    I -->|Analyst| L["Analyst Dashboard<br/>- Query Builder<br/>- Read-Only SQL<br/>- Export Results"]
-    
-    J --> M["User Makes Request"]
-    K --> M
-    L --> M
-    
-    M --> N["Backend API Receives Request"]
-    N --> O["Middleware Validates JWT<br/>& Extracts Role"]
-    O --> P{"Role Check:<br/>Does role allow<br/>this operation?"}
-    P -->|❌ No| Q["Return 403 Forbidden"]
-    P -->|✅ Yes| R["Generate SQL Query"]
-    R --> S["Safety Checker:<br/>Verify operation<br/>matches role permissions"]
-    S --> T{"Is operation<br/>safe?"}
-    T -->|❌ No| U["Return 400 Bad Request"]
-    T -->|✅ Yes| V["Execute Query<br/>on MySQL"]
-    V --> W["Return Results<br/>to Frontend"]
-    W --> X["Display to User"]
+## 🚀 Deployment Guide (100% Free Stack)
+
+This repository is optimized for deployment on the best modern free-tier services.
+
+### 1. Database (Supabase - Free Postgres)
+1. Create a free project on [Supabase](https://supabase.com/).
+2. Go to **Settings > Database** and copy your **Connection URI**.
+
+### 2. Backend (Render - Free Web Service)
+1. Go to [Render](https://render.com/) and create a **New Web Service**.
+2. Connect this GitHub repository.
+3. Settings:
+   - Language: `Python 3`
+   - Build Command: `cd backend && pip install -r requirements.txt`
+   - Start Command: `cd backend && gunicorn app.main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT`
+4. Add Environment Variables:
+   - `DATABASE_URL`: *Your Supabase URI*
+   - `PYTHON_VERSION`: `3.10.0`
+5. Deploy and copy your backend URL.
+
+### 3. Frontend (Vercel - Free React Hosting)
+1. Go to [Vercel](https://vercel.com/) and import this repository.
+2. Set Root Directory to `frontend`.
+3. Add Environment Variable:
+   - `VITE_API_URL`: *Your Render backend URL + `/api`* (e.g. `https://your-backend.onrender.com/api`)
+4. Deploy!
+
+### 4. Final Connection
+Go back to Render, add a new Environment Variable `FRONTEND_URL` with your Vercel URL, and save. Your app is now live!
+
+---
+
+## 💻 Local Development
+
+### 1. Clone & Setup
+```bash
+git clone https://github.com/Mohan130306/Updated-NL-To-SQL-Query-Builder.git
+cd Updated-NL-To-SQL-Query-Builder
 ```
 
-## Database Schema (MySQL)
-
-```sql
--- Users Table
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    first_name VARCHAR(100),
-    last_name VARCHAR(100),
-    role_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    is_active BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (role_id) REFERENCES roles(id)
-);
-
--- Roles Table
-CREATE TABLE roles (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) UNIQUE NOT NULL,  -- 'admin', 'developer', 'analyst'
-    description VARCHAR(255)
-);
-
--- Permissions Table
-CREATE TABLE permissions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    role_id INT NOT NULL,
-    permission VARCHAR(50),  -- 'CREATE', 'INSERT', 'UPDATE', 'DELETE', 'SELECT', 'DROP', 'ALTER'
-    FOREIGN KEY (role_id) REFERENCES roles(id)
-);
-
--- Query History Table
-CREATE TABLE query_history (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    query_text LONGTEXT,
-    execution_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(20),  -- 'success', 'failed'
-    result_rows INT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
--- Saved Queries Table
-CREATE TABLE saved_queries (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    query_name VARCHAR(255),
-    query_text LONGTEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
+### 2. Run the App
+To run both the frontend and backend locally with one command (requires PowerShell):
+```powershell
+.\run_local.ps1
 ```
 
-## Application Flow
+The frontend will be available at `http://localhost:5173` and the backend API at `http://localhost:8000`.
 
-1. **USER REGISTRATION**
-   * Email + Password
-   * Create user in DB (default role: analyst)
-   * Admin assigns final role
-
-2. **LOGIN**
-   * Email + Password → Verify
-   * Create JWT Token (payload: `{user_id, email, role}`)
-   * Return token to frontend
-
-3. **API REQUESTS**
-   * Frontend sends token in Authorization header
-   * Backend middleware validates token
-   * Extract role from token
-   * Check if role has permission for operation
-   * Execute or deny request
-
-4. **QUERY EXECUTION**
-   * Role permission check (admin=all, dev=INSERT/UPDATE/DELETE/SELECT, analyst=SELECT only)
-   * Safety checker validates query
-   * Execute if safe
-   * Log to query history
-
-## Project Phases
-
-- [x] **PHASE 1: PROJECT SETUP** - Directory structure, git, docs
-- [x] **PHASE 2: BACKEND FOUNDATION** - FastAPI, config, DB, ORM
-- [x] **PHASE 3: DATABASE & MODELS** - Schema models, initial data seed
-- [x] **PHASE 4: AUTHENTICATION** - Registration, JWT, hashing, middleware
-- [x] **PHASE 5: RBAC & PERMISSIONS** - Role checker, permission decorators
-- [x] **PHASE 6: API ENDPOINTS** - Query gen, safety check, execution, history, user mgmt
-- [x] **PHASE 7: FRONTEND** - React + Vite, API layer, Auth UI, Dashboard, Query Builder
-- [x] **PHASE 8: INTEGRATION** - Connect frontend/backend, E2E tests, error handling
-- [x] **PHASE 9: DEPLOYMENT** - Docker, CI/CD, deployment on Render/Railway
+### 3. Database Seeding (Optional)
+If you want to reset the database and spawn 5 test users (one for each role):
+```bash
+cd backend
+python -m app.db.init_db
+```
