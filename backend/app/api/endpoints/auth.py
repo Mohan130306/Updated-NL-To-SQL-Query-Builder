@@ -11,7 +11,7 @@ from app.models.user import User
 from app.models.role import Role
 from app.schemas.user import UserCreate, UserResponse
 from app.schemas.token import Token
-from app.schemas.auth import OTPRequest, OTPVerify, PasswordReset
+from app.schemas.auth import OTPRequest, PasswordReset
 from app.api import deps
 
 router = APIRouter()
@@ -95,30 +95,7 @@ def request_otp(req: OTPRequest, db: Session = Depends(get_db)):
     
     return {"message": "OTP sent successfully."}
 
-@router.post("/verify-otp-login", response_model=Token)
-def verify_otp_login(req: OTPVerify, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == req.email).first()
-    if not user:
-        raise HTTPException(status_code=400, detail="Invalid request")
-        
-    from datetime import timezone
-    now = datetime.now(timezone.utc)
-    
-    # Check if OTP matches and is not expired
-    if user.otp_code != req.otp_code or not user.otp_expires_at or user.otp_expires_at.replace(tzinfo=timezone.utc) < now:
-        raise HTTPException(status_code=400, detail="Invalid or expired OTP")
-        
-    # Clear the OTP now that it has been used
-    user.otp_code = None
-    user.otp_expires_at = None
-    db.commit()
-    
-    # Generate access token
-    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = security.create_access_token(
-        subject=user.id, expires_delta=access_token_expires
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
+
 
 @router.post("/reset-password")
 def reset_password(req: PasswordReset, db: Session = Depends(get_db)):
