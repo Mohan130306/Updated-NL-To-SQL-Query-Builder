@@ -1,12 +1,17 @@
-import google.generativeai as genai
-from app.core.config import settings
 import logging
+
+import google.generativeai as genai
+
+from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
-# Configure Gemini
-genai.configure(api_key=settings.GEMINI_API_KEY)
-model = genai.GenerativeModel("gemini-2.5-flash")
+# Configure Gemini only when an API key is available.
+if settings.GEMINI_API_KEY:
+    genai.configure(api_key=settings.GEMINI_API_KEY)
+    model = genai.GenerativeModel("gemini-2.5-flash")
+else:
+    model = None
 
 class AIService:
     @staticmethod
@@ -22,6 +27,9 @@ class AIService:
 
     @staticmethod
     def generate_sql(user_question: str) -> str:
+        if model is None:
+            raise RuntimeError("Gemini API key is not configured. Set GEMINI_API_KEY to enable SQL generation.")
+
         schema = AIService.get_database_schema()
         
         prompt = f"""
