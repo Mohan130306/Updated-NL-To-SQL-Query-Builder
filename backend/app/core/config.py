@@ -23,7 +23,8 @@ class Settings(BaseSettings):
     # Email (Gmail SMTP)
     GMAIL_USER: str = ""
     GMAIL_APP_PASSWORD: str = ""
-
+    # Frontend / CORS
+    FRONTEND_URL: str = "http://localhost:5173"
     model_config = SettingsConfigDict(
         env_file=os.path.join(BASE_DIR, ".env"),
         env_file_encoding="utf-8",
