@@ -35,25 +35,25 @@ export default function Login({ setUser }) {
       <div className="auth-info-side">
         <div className="auth-brand">
           <Database size={28} color="var(--accent-cyan)" />
-          <h2>NL2SQL</h2>
+          <h2>Query Intelligence</h2>
         </div>
         
         <div className="auth-content">
-          <h1>Welcome Back</h1>
-          <p>Sign in to continue exploring your database with the power of natural language. Safe, secure, and instantaneous.</p>
+          <h1>Welcome back</h1>
+          <p>Sign in to your secure AI data workspace.</p>
           
           <div className="feature-bullets">
             <div className="feature-bullet">
               <div className="feature-bullet-icon"><Zap size={20} /></div>
-              <span>Instant AI SQL Generation</span>
+              <span>AI-Powered Data Access</span>
             </div>
             <div className="feature-bullet">
               <div className="feature-bullet-icon"><ShieldCheck size={20} /></div>
-              <span>Role-Based Access Control</span>
+              <span>Role-Based Security</span>
             </div>
             <div className="feature-bullet">
               <div className="feature-bullet-icon"><Key size={20} /></div>
-              <span>Secure Audited Execution</span>
+              <span>Complete Auditability</span>
             </div>
           </div>
         </div>
@@ -64,7 +64,7 @@ export default function Login({ setUser }) {
         <div className="auth-form-container">
           <div className="auth-header">
             <h2>Sign In</h2>
-            <p>Enter your credentials to access your account</p>
+            <p>Secure Access · Role Protected · Audit Ready</p>
           </div>
           
           {error && <div className="auth-error">{error}</div>}

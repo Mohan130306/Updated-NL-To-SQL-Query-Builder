@@ -20,6 +20,10 @@ class Settings(BaseSettings):
     # AI
     GEMINI_API_KEY: str = ""
 
+    # Email (Gmail SMTP)
+    GMAIL_USER: str = ""
+    GMAIL_APP_PASSWORD: str = ""
+
     model_config = SettingsConfigDict(
         env_file=os.path.join(BASE_DIR, ".env"),
         env_file_encoding="utf-8",

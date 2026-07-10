@@ -1,6 +1,7 @@
-from datetime import timedelta, datetime
-import random
-import string
+from datetime import timedelta, datetime, timezone
+from email.message import EmailMessage
+import secrets
+import smtplib
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -15,6 +16,24 @@ from app.schemas.auth import OTPRequest, PasswordReset
 from app.api import deps
 
 router = APIRouter()
+
+
+def send_password_reset_otp(recipient: str, otp_code: str) -> None:
+    if not settings.GMAIL_USER or not settings.GMAIL_APP_PASSWORD:
+        raise RuntimeError("Email delivery is not configured")
+
+    message = EmailMessage()
+    message["Subject"] = "Your NL2SQL password reset code"
+    message["From"] = settings.GMAIL_USER
+    message["To"] = recipient
+    message.set_content(
+        f"Your password reset code is: {otp_code}\n\n"
+        "It expires in 10 minutes. If you did not request this, you can ignore this email."
+    )
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as smtp:
+        smtp.login(settings.GMAIL_USER, settings.GMAIL_APP_PASSWORD)
+        smtp.send_message(message)
 
 @router.post("/register", response_model=UserResponse)
 def register(user_in: UserCreate, db: Session = Depends(get_db)):
@@ -75,23 +94,25 @@ def request_otp(req: OTPRequest, db: Session = Depends(get_db)):
     if not user.is_active:
         raise HTTPException(status_code=400, detail="Inactive user")
         
-    # Generate 6 digit numeric OTP
-    otp_code = ''.join(random.choices(string.digits, k=6))
+    # Generate a cryptographically secure 6-digit numeric OTP.
+    otp_code = f"{secrets.randbelow(1_000_000):06d}"
     
     # Save to user and set expiry to 10 mins from now
     user.otp_code = otp_code
     
-    # Timezone-aware UTC datetime for SQLite compatibility
-    from datetime import timezone
     user.otp_expires_at = datetime.now(timezone.utc) + timedelta(minutes=10)
     db.commit()
-    
-    # Simulated email sending
-    print(f"\n" + "="*50)
-    print(f"EMAIL SIMULATION: Sending OTP to {user.email}")
-    print(f"OTP CODE: {otp_code}")
-    print(f"Expires in 10 minutes.")
-    print("="*50 + "\n")
+
+    try:
+        send_password_reset_otp(user.email, otp_code)
+    except (OSError, smtplib.SMTPException, RuntimeError):
+        user.otp_code = None
+        user.otp_expires_at = None
+        db.commit()
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Unable to send the recovery email. Please try again later.",
+        )
     
     return {"message": "OTP sent successfully."}
 
@@ -103,7 +124,6 @@ def reset_password(req: PasswordReset, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=400, detail="Invalid request")
         
-    from datetime import timezone
     now = datetime.now(timezone.utc)
     
     if user.otp_code != req.otp_code or not user.otp_expires_at or user.otp_expires_at.replace(tzinfo=timezone.utc) < now:
