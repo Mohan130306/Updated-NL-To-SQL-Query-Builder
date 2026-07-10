@@ -24,21 +24,14 @@ frontend_url = settings.FRONTEND_URL.strip().rstrip("/")
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    frontend_url,
 ]
+if frontend_url:
+    origins.append(frontend_url)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins if frontend_url else ["*"], # Allow all in dev, restrict in prod
-    allow_credentials=True if frontend_url else False, # Cannot be True if origins is ["*"]
     allow_methods=["*"],
     allow_headers=["*"],
 )
