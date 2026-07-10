@@ -8,7 +8,6 @@ export default function LandingPage() {
 
   return (
     <div className="landing-container">
-      {/* Navigation */}
       <nav className="landing-nav">
         <div className="nav-logo">
           <Database size={28} className="text-accent" />
@@ -20,25 +19,28 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
       <header className="hero-section">
-        <div className="hero-badge">✨ Powered by Google Gemini AI</div>
+        <div className="hero-badge">✨ Enterprise AI data intelligence platform</div>
         <h1 className="hero-title">
-          Talk to your database in <span className="text-gradient">plain English</span>
+          Turn business questions into <span className="text-gradient">governed SQL workflows</span>
         </h1>
         <p className="hero-subtitle">
-          Instantly translate natural language into complex, optimized SQL queries. No SQL expertise required. Build dashboards, export data, and get insights faster than ever.
+          Power secure, auditable analytics with AI-assisted query generation, role-based controls, and production-ready safeguards for modern teams across finance, healthcare, retail, and beyond.
         </p>
         <div className="hero-buttons">
           <button className="btn-primary btn-large" onClick={() => navigate('/register')}>
-            Start Generating Free <ChevronRight size={20} />
+            Explore the platform <ChevronRight size={20} />
           </button>
           <button className="btn-secondary btn-large" onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}>
-            See How It Works
+            See platform capabilities
           </button>
         </div>
-        
-        {/* Mock UI Preview */}
+        <div className="hero-highlights">
+          <div className="highlight-item">RBAC and SQL safety validation</div>
+          <div className="highlight-item">Gemini-powered SQL generation</div>
+          <div className="highlight-item">Audit-ready workspace history</div>
+        </div>
+
         <div className="hero-preview-window">
           <div className="window-header">
             <div className="window-dots">
@@ -50,43 +52,41 @@ export default function LandingPage() {
           </div>
           <div className="window-body">
             <div className="prompt-mock">
-              <span className="prompt-text">"Show me the top 5 students with the highest GPA"</span>
+              <span className="prompt-text">“Show me the top 5 active accounts by revenue this quarter.”</span>
             </div>
             <div className="sql-mock">
-              <code>SELECT first_name, last_name, gpa FROM students ORDER BY gpa DESC LIMIT 5;</code>
+              <code>SELECT account_name, revenue FROM analytics_view ORDER BY revenue DESC LIMIT 5;</code>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Features Section */}
       <section id="features" className="features-section">
-        <h2 className="section-title">Everything you need to analyze data</h2>
+        <h2 className="section-title">Built for enterprise data teams</h2>
         <div className="features-grid">
           <div className="feature-card">
             <div className="feature-icon"><Zap size={24} /></div>
-            <h3>Lightning Fast AI</h3>
-            <p>Our fine-tuned Gemini integration generates accurate SQL in milliseconds based on your database schema.</p>
+            <h3>AI-assisted query execution</h3>
+            <p>Translate natural-language requests into SQL with guardrails that fit your operating model and data governance standards.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon"><Shield size={24} /></div>
-            <h3>Role-Based Access</h3>
-            <p>Enterprise-grade security. Restrict query execution based on user roles (Admin, Developer, Analyst).</p>
+            <h3>Role-aware access controls</h3>
+            <p>Protect sensitive workflows with permission-based access that is enforced consistently across the workspace.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon"><BarChart3 size={24} /></div>
-            <h3>Instant Visualizations</h3>
-            <p>Don't just see the SQL. Execute it securely and instantly visualize the results in beautiful charts.</p>
+            <h3>Operational analytics</h3>
+            <p>Review results and activity in one place so teams can move from question to insight with confidence.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon"><Code2 size={24} /></div>
-            <h3>Schema Aware</h3>
-            <p>QuerySense learns your exact database schema to ensure queries are accurate and error-free.</p>
+            <h3>Schema-aware workflows</h3>
+            <p>Support complex enterprise data environments with an interface that remains clear, collaborative, and secure.</p>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="landing-footer">
         <div className="footer-content">
           <div className="footer-logo">

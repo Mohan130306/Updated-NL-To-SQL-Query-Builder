@@ -18,7 +18,7 @@ export default function Login({ setUser }) {
     try {
       const res = await authAPI.login(email, password);
       localStorage.setItem('token', res.data.access_token);
-      
+
       const userRes = await authAPI.getMe();
       setUser(userRes.data);
       navigate('/dashboard');
@@ -31,54 +31,58 @@ export default function Login({ setUser }) {
 
   return (
     <div className="auth-page-container">
-      {/* Left Side: Branding & Info */}
       <div className="auth-info-side">
         <div className="auth-brand">
           <Database size={28} color="var(--accent-cyan)" />
-          <h2>Query Intelligence</h2>
+          <h2>QuerySense AI</h2>
         </div>
-        
+
         <div className="auth-content">
-          <h1>Welcome back</h1>
-          <p>Sign in to your secure AI data workspace.</p>
-          
-          <div className="feature-bullets">
+          <h1>Secure access to AI data workflows</h1>
+          <p>Enter your workspace to generate SQL, review history, and operate within governed enterprise controls.</p>
+
+          <div className="auth-trust-bar">
+            <span className="auth-trust-chip">RBAC Protected</span>
+            <span className="auth-trust-chip">SQL Safety Checks</span>
+            <span className="auth-trust-chip">Audit Ready</span>
+          </div>
+
+          <div className="feature-bullets" style={{ marginTop: '1.5rem' }}>
             <div className="feature-bullet">
               <div className="feature-bullet-icon"><Zap size={20} /></div>
-              <span>AI-Powered Data Access</span>
+              <span>AI-assisted query generation</span>
             </div>
             <div className="feature-bullet">
               <div className="feature-bullet-icon"><ShieldCheck size={20} /></div>
-              <span>Role-Based Security</span>
+              <span>Role-based security controls</span>
             </div>
             <div className="feature-bullet">
               <div className="feature-bullet-icon"><Key size={20} /></div>
-              <span>Complete Auditability</span>
+              <span>Complete activity auditability</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Right Side: Form */}
       <div className="auth-form-side">
         <div className="auth-form-container">
           <div className="auth-header">
-            <h2>Sign In</h2>
-            <p>Secure Access · Role Protected · Audit Ready</p>
+            <h2>Welcome back</h2>
+            <p>Secure access · Role-aware · Audit ready</p>
           </div>
-          
+
           {error && <div className="auth-error">{error}</div>}
-          
+
           <form onSubmit={handlePasswordLogin}>
             <div className="input-group">
               <label className="input-label">Email Address</label>
-              <input 
-                type="email" 
-                className="input-field" 
-                value={email} 
-                onChange={e => setEmail(e.target.value)} 
+              <input
+                type="email"
+                className="input-field"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
                 placeholder="you@company.com"
-                required 
+                required
               />
             </div>
             <div className="input-group">
@@ -86,23 +90,23 @@ export default function Login({ setUser }) {
                 <label className="input-label">Password</label>
                 <Link to="/forgot-password" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textDecoration: 'none' }}>Forgot password?</Link>
               </div>
-              <input 
-                type="password" 
-                className="input-field" 
-                value={password} 
-                onChange={e => setPassword(e.target.value)} 
+              <input
+                type="password"
+                className="input-field"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
-                required 
+                required
               />
             </div>
-            
+
             <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '16px', padding: '14px' }} disabled={loading}>
               {loading ? 'Authenticating...' : <><LogIn size={18} /> Sign In</>}
             </button>
           </form>
-          
+
           <div className="auth-footer" style={{ marginTop: '30px' }}>
-            <p>Don't have an account? <Link to="/register" className="auth-link">Register Now</Link></p>
+            <p>Need an account? <Link to="/register" className="auth-link">Create one</Link></p>
           </div>
         </div>
       </div>

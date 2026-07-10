@@ -5,7 +5,7 @@ import { Database, ShieldCheck, Zap, Key } from 'lucide-react';
 import './AuthPages.css';
 
 export default function ForgotPassword() {
-  const [step, setStep] = useState(1); // 1 = Request OTP, 2 = Reset Password
+  const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -48,59 +48,63 @@ export default function ForgotPassword() {
 
   return (
     <div className="auth-page-container">
-      {/* Left Side: Branding & Info */}
       <div className="auth-info-side">
         <div className="auth-brand">
           <Database size={28} color="var(--accent-cyan)" />
-          <h2>NL2SQL</h2>
+          <h2>QuerySense AI</h2>
         </div>
-        
+
         <div className="auth-content">
-          <h1>Reset Password</h1>
-          <p>Securely regain access to your account using a one-time passcode sent directly to your email.</p>
-          
-          <div className="feature-bullets">
+          <h1>Reset your access</h1>
+          <p>Regain entry to your secure workspace with a one-time passcode delivered to your inbox.</p>
+
+          <div className="auth-trust-bar">
+            <span className="auth-trust-chip">Secure recovery</span>
+            <span className="auth-trust-chip">Role-aware controls</span>
+            <span className="auth-trust-chip">Audit-ready access</span>
+          </div>
+
+          <div className="feature-bullets" style={{ marginTop: '1.5rem' }}>
             <div className="feature-bullet">
               <div className="feature-bullet-icon"><Zap size={20} /></div>
-              <span>Instant AI SQL Generation</span>
+              <span>Instant AI SQL generation</span>
             </div>
             <div className="feature-bullet">
               <div className="feature-bullet-icon"><ShieldCheck size={20} /></div>
-              <span>Role-Based Access Control</span>
+              <span>Role-based access control</span>
             </div>
             <div className="feature-bullet">
               <div className="feature-bullet-icon"><Key size={20} /></div>
-              <span>Secure Audited Execution</span>
+              <span>Secure audited execution</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Right Side: Form */}
       <div className="auth-form-side">
         <div className="auth-form-container">
           <div className="auth-header">
-            <h2>Recover Account</h2>
+            <h2>Recover account</h2>
             <p>
               {step === 1 && 'Enter your email to receive a recovery code'}
               {step === 2 && 'Enter the 6-digit code and your new password'}
             </p>
           </div>
-          
+
           {error && <div className="auth-error">{error}</div>}
           {success && <div className="auth-error" style={{ background: 'rgba(16, 185, 129, 0.1)', borderColor: '#10b981', color: '#6ee7b7' }}>{success}</div>}
-          
+
           {step === 1 && (
             <form onSubmit={handleRequestOTP}>
               <div className="input-group">
                 <label className="input-label">Email Address</label>
-                <input 
-                  type="email" 
-                  className="input-field" 
-                  value={email} 
-                  onChange={e => setEmail(e.target.value)} 
+                <input
+                  type="email"
+                  className="input-field"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                   placeholder="you@company.com"
-                  required 
+                  required
                 />
               </div>
               <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '16px', padding: '14px' }} disabled={loading}>
@@ -113,26 +117,26 @@ export default function ForgotPassword() {
             <form onSubmit={handleResetPassword}>
               <div className="input-group">
                 <label className="input-label">6-Digit Recovery Code</label>
-                <input 
-                  type="text" 
-                  className="input-field" 
-                  value={otpCode} 
-                  onChange={e => setOtpCode(e.target.value)} 
+                <input
+                  type="text"
+                  className="input-field"
+                  value={otpCode}
+                  onChange={e => setOtpCode(e.target.value)}
                   placeholder="123456"
                   maxLength={6}
-                  required 
+                  required
                   style={{ letterSpacing: '4px', textAlign: 'center', fontSize: '1.2rem', fontFamily: 'monospace' }}
                 />
               </div>
               <div className="input-group">
                 <label className="input-label">New Password</label>
-                <input 
-                  type="password" 
-                  className="input-field" 
-                  value={newPassword} 
-                  onChange={e => setNewPassword(e.target.value)} 
+                <input
+                  type="password"
+                  className="input-field"
+                  value={newPassword}
+                  onChange={e => setNewPassword(e.target.value)}
                   placeholder="••••••••"
-                  required 
+                  required
                   minLength={6}
                 />
               </div>
@@ -146,7 +150,7 @@ export default function ForgotPassword() {
               </div>
             </form>
           )}
-          
+
           <div className="auth-footer" style={{ marginTop: '30px' }}>
             <p>Remembered your password? <Link to="/login" className="auth-link">Back to Login</Link></p>
           </div>

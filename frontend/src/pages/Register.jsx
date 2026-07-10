@@ -23,11 +23,10 @@ export default function Register({ setUser }) {
     setLoading(true);
     try {
       await authAPI.register(formData);
-      
-      // Auto login after register
+
       const res = await authAPI.login(formData.email, formData.password);
       localStorage.setItem('token', res.data.access_token);
-      
+
       const userRes = await authAPI.getMe();
       setUser(userRes.data);
       navigate('/dashboard');
@@ -40,97 +39,101 @@ export default function Register({ setUser }) {
 
   return (
     <div className="auth-page-container">
-      {/* Left Side: Branding & Info */}
       <div className="auth-info-side">
         <div className="auth-brand">
           <Database size={28} color="var(--accent-cyan)" />
-          <h2>NL2SQL</h2>
+          <h2>QuerySense AI</h2>
         </div>
-        
+
         <div className="auth-content">
-          <h1>Start Exploring</h1>
-          <p>Create an account to securely access the database and generate queries using advanced AI models.</p>
-          
-          <div className="feature-bullets">
+          <h1>Launch your governed analytics workspace</h1>
+          <p>Create an account to access secure AI query workflows with enterprise-ready controls and role-aware access.</p>
+
+          <div className="auth-trust-bar">
+            <span className="auth-trust-chip">Gemini AI</span>
+            <span className="auth-trust-chip">Viewer by default</span>
+            <span className="auth-trust-chip">Any connected data source</span>
+          </div>
+
+          <div className="feature-bullets" style={{ marginTop: '1.5rem' }}>
             <div className="feature-bullet">
               <div className="feature-bullet-icon"><Sparkles size={20} /></div>
-              <span>AI-Powered Query Generation</span>
+              <span>AI-powered query generation</span>
             </div>
             <div className="feature-bullet">
               <div className="feature-bullet-icon"><ShieldCheck size={20} /></div>
-              <span>Secure Viewer Role by Default</span>
+              <span>Secure viewer role by default</span>
             </div>
             <div className="feature-bullet">
               <div className="feature-bullet-icon"><DatabaseZap size={20} /></div>
-              <span>Connect to Any Data Source</span>
+              <span>Connect to enterprise data sources</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Right Side: Form */}
       <div className="auth-form-side">
         <div className="auth-form-container">
           <div className="auth-header">
-            <h2>Create Account</h2>
-            <p>Join to access the Query Builder</p>
+            <h2>Create account</h2>
+            <p>Join the query studio</p>
           </div>
-          
+
           {error && <div className="auth-error">{error}</div>}
-          
+
           <form onSubmit={handleSubmit}>
             <div style={{ display: 'flex', gap: '16px' }}>
               <div className="input-group" style={{ flex: 1 }}>
                 <label className="input-label">First Name</label>
-                <input 
-                  type="text" 
-                  name="first_name" 
-                  className="input-field" 
-                  onChange={handleChange} 
+                <input
+                  type="text"
+                  name="first_name"
+                  className="input-field"
+                  onChange={handleChange}
                   placeholder="John"
-                  required 
+                  required
                 />
               </div>
               <div className="input-group" style={{ flex: 1 }}>
                 <label className="input-label">Last Name</label>
-                <input 
-                  type="text" 
-                  name="last_name" 
-                  className="input-field" 
-                  onChange={handleChange} 
+                <input
+                  type="text"
+                  name="last_name"
+                  className="input-field"
+                  onChange={handleChange}
                   placeholder="Doe"
-                  required 
+                  required
                 />
               </div>
             </div>
             <div className="input-group">
               <label className="input-label">Email Address</label>
-              <input 
-                type="email" 
-                name="email" 
-                className="input-field" 
-                onChange={handleChange} 
+              <input
+                type="email"
+                name="email"
+                className="input-field"
+                onChange={handleChange}
                 placeholder="you@company.com"
-                required 
+                required
               />
             </div>
             <div className="input-group">
               <label className="input-label">Password</label>
-              <input 
-                type="password" 
-                name="password" 
-                className="input-field" 
-                onChange={handleChange} 
+              <input
+                type="password"
+                name="password"
+                className="input-field"
+                onChange={handleChange}
                 placeholder="••••••••"
-                required 
-                minLength={6} 
+                required
+                minLength={6}
               />
             </div>
             <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '16px', padding: '14px' }} disabled={loading}>
               {loading ? 'Creating Account...' : <><UserPlus size={18} /> Register Now</>}
             </button>
           </form>
-          
+
           <div className="auth-footer">
             <p>Already have an account? <Link to="/login" className="auth-link">Sign In</Link></p>
           </div>
